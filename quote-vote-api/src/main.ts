@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import * as express from 'express';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
+import express from 'express';
 
 let cachedServer: express.Express;
 
@@ -12,7 +12,7 @@ let cachedServer: express.Express;
  * Configures and initializes the NestJS application.
  * @param app The NestJS application instance.
  */
-function configureApp(app: INestApplication) {
+function configureApp(app: NestExpressApplication) {
   // It's crucial that CORS is enabled before other middleware.
   // The origin is determined by the FRONTEND_URL env var for production/preview,
   // falling back to localhost for local development.
@@ -43,7 +43,7 @@ function configureApp(app: INestApplication) {
 async function bootstrap() {
   if (!cachedServer) {
     const expressApp = express();
-    const nestApp = await NestFactory.create(
+    const nestApp = await NestFactory.create<NestExpressApplication>(
       AppModule,
       new ExpressAdapter(expressApp),
     );
@@ -59,7 +59,10 @@ async function bootstrap() {
 // Forcing a new deployment
 // Check if running in a serverless environment like Vercel
 if (process.env.VERCEL_ENV) {
-  module.exports = bootstrap();
+  module.exports = async (req: express.Request, res: express.Response) => {
+    const server = await bootstrap();
+    server(req, res);
+  };
 } else {
   // Standard local development server setup
   bootstrap().then(() => {
