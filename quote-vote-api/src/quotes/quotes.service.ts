@@ -147,20 +147,7 @@ export class QuotesService {
 
       await session.commitTransaction();
 
-      // Construct the response DTO directly from the updated Mongoose document
-      // to ensure all required fields are present and correctly typed.
-      return {
-        id: updatedQuote.id,
-        text: updatedQuote.text,
-        author: updatedQuote.author,
-        avatarUrl: updatedQuote.avatarUrl,
-        tags: updatedQuote.tags,
-        votes: updatedQuote.votes,
-        createdAt: updatedQuote.createdAt,
-        updatedAt: updatedQuote.updatedAt,
-        createdBy: updatedQuote.createdBy,
-        isVoted: true,
-      };
+      return this.toQuoteResponseDto(updatedQuote, true);
     } catch (error) {
       await session.abortTransaction();
       throw error; // re-throw the original error (e.g., ConflictException)
@@ -191,19 +178,7 @@ export class QuotesService {
       throw new ConflictException('You have not voted for this quote.');
     }
 
-    // Construct and return the response DTO.
-    return {
-      id: updatedQuote.id,
-      text: updatedQuote.text,
-      author: updatedQuote.author,
-      avatarUrl: updatedQuote.avatarUrl,
-      tags: updatedQuote.tags,
-      votes: updatedQuote.votes,
-      createdAt: updatedQuote.createdAt,
-      updatedAt: updatedQuote.updatedAt,
-      createdBy: updatedQuote.createdBy,
-      isVoted: false, // The user has just unvoted
-    };
+    return this.toQuoteResponseDto(updatedQuote, false);
   }
 
   async delete(id: string, userId: string): Promise<{ message: string }> {
@@ -219,5 +194,20 @@ export class QuotesService {
 
     await this.quoteModel.deleteOne({ _id: id }).exec();
     return { message: 'Quote deleted successfully' };
+  }
+
+  private toQuoteResponseDto(quote: QuoteDocument, isVoted: boolean): QuoteResponseDto {
+    return {
+        id: quote.id,
+        text: quote.text,
+        author: quote.author,
+        avatarUrl: quote.avatarUrl,
+        tags: quote.tags,
+        votes: quote.votes,
+        createdAt: quote.createdAt,
+        updatedAt: quote.updatedAt,
+        createdBy: quote.createdBy,
+        isVoted: isVoted,
+    };
   }
 }
