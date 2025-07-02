@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Delete, Param, Query, Req, UseGuards, Body } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { GetQuotesQueryDto } from './dto/get-quotes-query.dto';
-import { ClerkAuthGuard } from '@/auth/clerk-auth.guard';
-import { GetAuth } from '@/auth/get-auth.decorator';
+import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
+import { GetAuth } from '../auth/get-auth.decorator';
 import { QuoteResponseDto } from './dto/quote-response.dto';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { Quote } from './schemas/quote.schema';

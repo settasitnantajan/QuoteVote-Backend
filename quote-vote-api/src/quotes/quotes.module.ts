@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { QuotesController } from './quotes.controller';
 import { QuotesService } from './quotes.service';
 import { Quote, QuoteSchema } from './schemas/quote.schema';
-import { UsersModule } from '@/users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
