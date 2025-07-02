@@ -56,7 +56,7 @@ async function bootstrap() {
 
   return cachedServer;
 }
-
+// Forcing a new deployment
 // Check if running in a serverless environment like Vercel
 if (process.env.VERCEL_ENV) {
   module.exports = bootstrap();
