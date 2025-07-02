@@ -23,7 +23,7 @@ const bootstrap = async () => {
     // แนะนำให้ใช้ Environment Variable สำหรับ Production
     // คุณสามารถตั้งค่า FRONTEND_URL ใน Vercel Dashboard
     app.enableCors({
-      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+      origin: process.env.FRONTEND_URL || 'https://quote-vote-backend.vercel.app/',
       credentials: true,
     });
 
