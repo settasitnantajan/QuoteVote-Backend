@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://quote-vote-nu.vercel.app/', // Allow frontend origin
+    origin: 'http://localhost:3000', // Allow frontend origin
     credentials: true,
   });
 
