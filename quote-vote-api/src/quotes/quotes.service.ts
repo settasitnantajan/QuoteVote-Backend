@@ -5,7 +5,7 @@ import { Quote, QuoteDocument } from './schemas/quote.schema';
 import { GetQuotesQueryDto } from './dto/get-quotes-query.dto';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { QuoteResponseDto } from './dto/quote-response.dto';
-import { UsersService } from '@/users/users.service';
+import { UsersService } from '../users/users.service';
 @Injectable()
 export class QuotesService {
   constructor(
